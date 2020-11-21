@@ -2,6 +2,7 @@ package com.shopping.webservice.security.oauth2;
 
 import com.shopping.webservice.entity.UserEntity;
 import com.shopping.webservice.enums.AuthenticationProvider;
+import com.shopping.webservice.enums.UserType;
 import com.shopping.webservice.exception.Oauth2TokenException;
 import com.shopping.webservice.repository.UserRepository;
 import com.shopping.webservice.security.JwtUserDetails;
@@ -67,6 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        user.setUserType(UserType.CLIENT);
         return userRepository.save(user);
     }
 

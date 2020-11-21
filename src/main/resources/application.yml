@@ -47,3 +47,4 @@ jwt:
   issuer: altrooist-api
   authorizedRedirectUris:
     - http://localhost:4200/oauth2/redirect
+    - https://altrooist-c3473.firebaseapp.com/

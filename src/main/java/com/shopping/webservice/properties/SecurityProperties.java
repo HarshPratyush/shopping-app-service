@@ -1,6 +1,7 @@
 package com.shopping.webservice.properties;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
@@ -29,5 +30,6 @@ public class SecurityProperties {
      */
     private final Duration tokenExpiration = Duration.ofHours(4);
 
-    private List<String> authorizedRedirectUris = new ArrayList<>();
+    @NonNull
+    private final List<String> authorizedRedirectUris ;
 }

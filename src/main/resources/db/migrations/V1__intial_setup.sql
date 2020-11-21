@@ -10,7 +10,7 @@ create table if not exists user_details (
         password varchar(255),
         provider varchar(255),
         provider_id varchar(255),
-        user_type varchar(255),
+        user_type varchar(255) not null,
         primary key (id)
  );
 
