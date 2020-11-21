@@ -25,6 +25,25 @@ spring:
       - classpath:/db/migrations
     table: webservice_schema_version
     baseline-version: 0
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 822175996451-p5d1of26olctf2lunj6kkpjv5qlc23pe.apps.googleusercontent.com
+            clientSecret: Qf2Rw2WCNdYyY5V6te_vUl63
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+
 server:
   servlet:
     context-path: /api/service
+
+jwt:
+  passwordStrength: 0
+  secret: SECRET_IS_HERE
+  issuer: altrooist-api
+  authorizedRedirectUris:
+    - http://localhost:4200/oauth2/redirect
