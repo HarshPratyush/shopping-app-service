@@ -1,6 +1,30 @@
 spring:
   application:
     name: shopping-app-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-init-sql: SELECT 1
+      connection-timeout: 36000000
+      idle-timeout: 0
+      poolName: shopping-app-pool
+      maximum-pool-size: 20
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    baseline-on-migrate: true
+    locations:
+      - classpath:/db/migrations
+    table: webservice_schema_version
+    baseline-version: 0
 server:
   servlet:
-    context-path: api/service
+    context-path: /api/service
