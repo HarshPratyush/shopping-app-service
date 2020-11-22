@@ -2,19 +2,19 @@ package com.shopping.webservice.security;
 
 import com.shopping.webservice.properties.SecurityProperties;
 import io.jsonwebtoken.*;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Slf4j
 @Service
 public class TokenProvider {
 
+    public static final String AUTH_PROVIDER = "AUTH_PROVIDER";
+    public static final String USER_TYPE = "USER_TYPE";
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -30,7 +30,9 @@ public class TokenProvider {
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate).
                 setIssuer(securityProperties.getIssuer())
-                .signWith(SignatureAlgorithm.HS512, securityProperties.getSecret())
+                .signWith(SignatureAlgorithm.HS512, securityProperties.getSecret()).
+                        claim(USER_TYPE,userPrincipal.getUserType()).
+                        claim(AUTH_PROVIDER,userPrincipal.getAuthenticationProvider())
                 .compact();
     }
 

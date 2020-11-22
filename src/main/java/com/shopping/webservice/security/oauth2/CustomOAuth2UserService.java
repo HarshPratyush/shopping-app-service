@@ -6,6 +6,7 @@ import com.shopping.webservice.enums.UserType;
 import com.shopping.webservice.exception.Oauth2TokenException;
 import com.shopping.webservice.repository.UserRepository;
 import com.shopping.webservice.security.JwtUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -14,10 +15,10 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
@@ -43,7 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new Oauth2TokenException("Email not found from OAuth2 provider");
         }
 
-        Optional<UserEntity> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        Optional<UserEntity> userOptional = userRepository.findByEmailIgnoreCase(oAuth2UserInfo.getEmail());
         UserEntity user;
         if(userOptional.isPresent()) {
             user = userOptional.get();

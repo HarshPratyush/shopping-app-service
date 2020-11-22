@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.Optional;
 
 import static com.shopping.webservice.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.shopping.webservice.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.TOKEN_HEADER_RESP;
 
 
 @Slf4j
@@ -53,6 +54,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
+    @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
@@ -64,9 +66,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         String token = tokenProvider.createToken(authentication);
+        response.addHeader(TOKEN_HEADER_RESP,token);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token)
                 .build().toUriString();
     }
 

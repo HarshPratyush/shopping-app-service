@@ -1,28 +1,38 @@
 package com.shopping.webservice.security;
 
 import com.shopping.webservice.entity.UserEntity;
+import com.shopping.webservice.enums.AuthenticationProvider;
+import com.shopping.webservice.enums.UserType;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class JwtUserDetails implements OAuth2User, UserDetails {
+@Data
+public class JwtUserDetails implements OAuth2User, UserDetails, Serializable {
+    private static final long serialVersionUID = 0L;
     private Long id;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
+    private UserType userType;
+    private AuthenticationProvider authenticationProvider;
 
-    public JwtUserDetails(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public JwtUserDetails(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities,UserType userType, AuthenticationProvider authenticationProvider) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.userType = userType;
+        this.authenticationProvider = authenticationProvider;
     }
 
     public static JwtUserDetails create(UserEntity user) {
@@ -33,7 +43,9 @@ public class JwtUserDetails implements OAuth2User, UserDetails {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities
+                authorities,
+                user.getUserType(),
+                user.getProvider()
         );
     }
 
@@ -58,7 +70,7 @@ public class JwtUserDetails implements OAuth2User, UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return getEmail();
     }
 
     @Override
